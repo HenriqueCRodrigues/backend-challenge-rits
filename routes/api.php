@@ -14,6 +14,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('customers')->group(function () {
+    Route::post('create', 'CustomerController@store');
+
+    Route::prefix('{customerId}')->group(function () {
+        Route::prefix('orders')->group(function () {
+            Route::post('create', 'OrderController@storeFromCustomer');
+            Route::get('orders', 'OrderController@allFromCustomer');
+            Route::prefix('{orderId}')->group(function () {
+                Route::get('show', 'OrderController@showFromCustomer');
+                Route::put('cancel', 'OrderController@cancelFromCustomer');
+                Route::delete('delete', 'OrderController@deleteFromCustomer');
+            });
+        });
+    });
+});
+
+
+Route::prefix('')->group(function () {
+    Route::prefix('products')->group(function () {
+        Route::post('create', 'ProductController@store');
+        Route::get('products', 'ProductController@all');
+        Route::put('update', 'ProductController@update');
+        Route::delete('delete', 'ProductController@delete');
+    });
+    
+    Route::prefix('orders')->group(function () {
+        Route::get('', 'OrderController@all');
+        Route::prefix('{orderId}')->group(function () {
+            Route::put('change-status', 'OrderController@changeStatus');
+            Route::delete('delete', 'OrderController@delete');
+        });
+    });
 });
