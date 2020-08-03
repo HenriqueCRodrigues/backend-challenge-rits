@@ -15,7 +15,13 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+
+            $table->enum('status', ['Pendente', 'Em preparo', 'Em entrega', 'Entregue', 'Cancelado']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
