@@ -15,35 +15,39 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('customers')->group(function () {
-    Route::post('create', 'CustomerController@store');
+    Route::post('create', 'CustomerController@store')->name('customers.store');
 
     Route::prefix('{customerId}')->group(function () {
         Route::prefix('orders')->group(function () {
-            Route::post('create', 'OrderController@storeFromCustomer');
-            Route::get('orders', 'OrderController@allFromCustomer');
+            Route::post('create', 'OrderController@storeFromCustomer')->name('customers.orders.create');
+            Route::post('', 'OrderController@allFromCustomer')->name('customers.orders.all');
             Route::prefix('{orderId}')->group(function () {
-                Route::get('show', 'OrderController@showFromCustomer');
-                Route::put('cancel', 'OrderController@cancelFromCustomer');
-                Route::delete('delete', 'OrderController@deleteFromCustomer');
+                Route::get('show', 'OrderController@showFromCustomer')->name('customers.orders.show');
+                Route::put('cancel', 'OrderController@cancelFromCustomer')->name('customers.orders.cancel');
+                Route::delete('delete', 'OrderController@deleteFromCustomer')->name('customers.orders.delete');
             });
         });
     });
 });
 
 
-Route::prefix('')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::prefix('products')->group(function () {
-        Route::post('create', 'ProductController@store');
-        Route::get('products', 'ProductController@all');
-        Route::put('update', 'ProductController@update');
-        Route::delete('delete', 'ProductController@delete');
+        Route::post('create', 'ProductController@store')->name('products.store');
+        Route::post('', 'ProductController@all')->name('products.all');
+        Route::put('update', 'ProductController@update')->name('products.update');
+        Route::prefix('{productId}')->group(function () {
+            Route::get('', 'ProductController@show')->name('products.show');
+            Route::delete('delete', 'ProductController@delete')->name('products.delete');
+        });
+
     });
     
     Route::prefix('orders')->group(function () {
-        Route::get('', 'OrderController@all');
+        Route::post('', 'OrderController@all');
         Route::prefix('{orderId}')->group(function () {
-            Route::put('change-status', 'OrderController@changeStatus');
-            Route::delete('delete', 'OrderController@delete');
+            Route::put('change-status', 'OrderController@changeStatus')->name('orders.change');
+            Route::delete('delete', 'OrderController@delete')->name('orders.delete');
         });
     });
 });
