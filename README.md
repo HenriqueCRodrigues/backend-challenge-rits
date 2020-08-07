@@ -1,4 +1,6 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+<p align="center">
+    <img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400">
+    <img src="https://rits.dev/wp-content/themes/rits/assets/imgs/logotipo-2.png" width="300"></p>
 
 <p align="center">
 <a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
@@ -7,60 +9,105 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Desafio Rits - Desenvolvimento de software, e-commerce e outsourcing de TI
+Foi realizado a criação de uma API em laravel e o front em Laravel<br>
+Para emular o projeto, basta seguir os requisitos básico do Laravel 7.x, que se encontra no link: https://laravel.com/docs/7.x
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Após o clone do projeto, basta entrar no projeto e seguir o procedimento abaixo<br>
+<ul>
+    <li>executar o comando "composer install"</li>
+    <li>npm install</li>
+    <li>executar o comando "git clone https://github.com/laradock/laradock.git"</li>
+</ul>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Com isso, a API e o front esta pronto para inicializar.<br>
+A API utiliza o laradock para instanciar o docker
 
-## Learning Laravel
+Para utilizar o Docker na api, entre na pasta laradock e execute o comando "sudo docker-compose up -d nginx mysql phpmyadmin".<br>
+OBS: Após o git clone do laradock, deve-se configurar um arquivo .env dentro da pasta laradock, existe um arquivo .env.example para melhor entendimento.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+#### Rotas da API
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```
++--------+----------+----------------------------------------------------+-------------------------+---------------------------------------------------------+------------+
+| Domain | Method   | URI                                                | Name                    | Action                                                  | Middleware |
++--------+----------+----------------------------------------------------+-------------------------+---------------------------------------------------------+------------+
+|        | POST     | api/customers/create                               | customers.store         | App\Http\Controllers\CustomerController@store           | api        |
+|        | POST     | api/customers/{customerId}/orders                  | customers.orders.all    | App\Http\Controllers\OrderController@allFromCustomer    | api        |
+|        | POST     | api/customers/{customerId}/orders/create           | customers.orders.create | App\Http\Controllers\OrderController@storeFromCustomer  | api        |
+|        | PUT      | api/customers/{customerId}/orders/{orderId}/cancel | customers.orders.cancel | App\Http\Controllers\OrderController@cancelFromCustomer | api        |
+|        | DELETE   | api/customers/{customerId}/orders/{orderId}/delete | customers.orders.delete | App\Http\Controllers\OrderController@deleteFromCustomer | api        |
+|        | GET|HEAD | api/customers/{customerId}/orders/{orderId}/show   | customers.orders.show   | App\Http\Controllers\OrderController@showFromCustomer   | api        |
+|        | POST     | api/orders                                         |                         | App\Http\Controllers\OrderController@all                | api        |
+|        |          |                                                    |                         |                                                         | auth       |
+|        | PUT      | api/orders/{orderId}/change-status                 | orders.change           | App\Http\Controllers\OrderController@changeStatus       | api        |
+|        |          |                                                    |                         |                                                         | auth       |
+|        | DELETE   | api/orders/{orderId}/delete                        | orders.delete           | App\Http\Controllers\OrderController@delete             | api        |
+|        |          |                                                    |                         |                                                         | auth       |
+|        | POST     | api/products                                       | products.all            | App\Http\Controllers\ProductController@all              | api        |
+|        |          |                                                    |                         |                                                         | auth       |
+|        | POST     | api/products/create                                | products.store          | App\Http\Controllers\ProductController@store            | api        |
+|        |          |                                                    |                         |                                                         | auth       |
+|        | PUT      | api/products/update                                | products.update         | App\Http\Controllers\ProductController@update           | api        |
+|        |          |                                                    |                         |                                                         | auth       |
+|        | GET|HEAD | api/products/{productId}                           | products.show           | App\Http\Controllers\ProductController@show             | api        |
+|        |          |                                                    |                         |                                                         | auth       |
+|        | DELETE   | api/products/{productId}/delete                    | products.delete         | App\Http\Controllers\ProductController@delete           | api        |
+|        |          |                                                    |                         |                                                         | auth       |
++--------+----------+----------------------------------------------------+-------------------------+---------------------------------------------------------+------------+
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
-- [云软科技](http://www.yunruan.ltd/)
+```
+
+
+#### Rotas da API
+```
++--------+----------+----------------------------------------------------+-------------------------+------------------------------------------------------------------------+------------+
+| Domain | Method   | URI                                                | Name                    | Action                                                                 | Middleware |
++--------+----------+----------------------------------------------------+-------------------------+------------------------------------------------------------------------+------------+
+|        | GET|HEAD | /                                                  | home                    | App\Http\Controllers\HomeController@index                              | web        |
+|        | GET|HEAD | customers/create                                   | web.customers.create    | App\Http\Controllers\CustomerController@webCreateCustomer              | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | POST     | customers/store                                    | web.customers.store     | App\Http\Controllers\CustomerController@webStoreCustomer               | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | DELETE   | customers/{customerId}/delete                      | web.customers.delete    | App\Http\Controllers\CustomerController@webDeleteCustomer              | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | GET|HEAD | customers/{customerId}/edit                        | web.customers.edit      | App\Http\Controllers\CustomerController@webEditCustomer                | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | POST     | customers/{customerId}/update                      | web.customers.update    | App\Http\Controllers\CustomerController@webUpdateCustomer              | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | DELETE   | orders/{orderId}/delete                            | web.orders.delete       | App\Http\Controllers\OrderController@webDeleteProduct                  | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | GET|HEAD | orders/{orderId}/edit                              | web.orders.edit         | App\Http\Controllers\OrderController@webEditProduct                    | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | POST     | orders/{orderId}/status                            | web.orders.status       | App\Http\Controllers\OrderController@webStatusOrder                    | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | POST     | password/confirm                                   |                         | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | GET|HEAD | password/confirm                                   | password.confirm        | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | POST     | password/email                                     | password.email          | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web        |
+|        | GET|HEAD | password/reset                                     | password.request        | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web        |
+|        | POST     | password/reset                                     | password.update         | App\Http\Controllers\Auth\ResetPasswordController@reset                | web        |
+|        | GET|HEAD | password/reset/{token}                             | password.reset          | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web        |
+|        | GET|HEAD | products/create                                    | web.products.create     | App\Http\Controllers\ProductController@webCreateProduct                | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | POST     | products/store                                     | web.products.store      | App\Http\Controllers\ProductController@webStoreProduct                 | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | DELETE   | products/{productId}/delete                        | web.products.delete     | App\Http\Controllers\ProductController@webDeleteProduct                | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | GET|HEAD | products/{productId}/edit                          | web.products.edit       | App\Http\Controllers\ProductController@webEditProduct                  | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
+|        | POST     | products/{productId}/update                        | web.products.update     | App\Http\Controllers\ProductController@webUpdateProduct                | web        |
+|        |          |                                                    |                         |                                                                        | auth       |
++--------+----------+----------------------------------------------------+-------------------------+------------------------------------------------------------------------+------------+
+```
+#### TDD
+<img src="https://i.imgur.com/OsZWYZy.png">
+<br>
+
 
 ## Contributing
 
